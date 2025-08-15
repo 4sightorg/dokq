@@ -30,8 +30,42 @@
       "destination": "/index.html"
     },
     {
+      "source": "/",
+      "destination": "/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/partner-sign-in",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/partner-sign-up", 
+      "dest": "/index.html"
+    },
+    {
+      "src": "/patient-sign-in",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/patient-sign-up",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/patient-portal",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
     }
   ]
 }
