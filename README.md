@@ -128,7 +128,7 @@ Generative AI was used for:
 
 ## Acknowledgements
 
-Special thanks to the contributors and maintainers. We also acknowledge the authors of the open‑source tools used in this project and the m3-Markdown-Badges project for the technology badges.
+Special thanks to the contributors and maintainers. We also acknowledge the authors of the open‑source tools used in this project.
 
 ---
 
