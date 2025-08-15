@@ -6,6 +6,30 @@
   "framework": "vite",
   "rewrites": [
     {
+      "source": "/patient-sign-up",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/patient-sign-in",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/patient-portal",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/partner-sign-in",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/partner-sign-up",
+      "destination": "/index.html"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }
