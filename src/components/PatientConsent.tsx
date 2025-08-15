@@ -48,7 +48,21 @@ const PatientConsent: React.FC<PatientConsentProps> = ({ user, onConsentComplete
   }, []);
 
   const isAllConsentGiven = useCallback(() => {
-    return Object.values(consentData).every(value => value === true);
+    // Exclude the language field from validation since it's not a consent item
+    const consentFields = {
+      dataProcessing: consentData.dataProcessing,
+      dataSharing: consentData.dataSharing,
+      researchParticipation: consentData.researchParticipation,
+      marketingCommunications: consentData.marketingCommunications,
+      emergencyAccess: consentData.emergencyAccess,
+      thirdPartyServices: consentData.thirdPartyServices,
+      dataRetention: consentData.dataRetention,
+      rightsAcknowledgment: consentData.rightsAcknowledgment
+    };
+    
+    const allConsentsGiven = Object.values(consentFields).every(value => value === true);
+    console.log('🔍 Consent validation:', consentFields, 'All given:', allConsentsGiven);
+    return allConsentsGiven;
   }, [consentData]);
 
   const handleSubmit = useCallback(async () => {
@@ -467,9 +481,20 @@ const PatientConsent: React.FC<PatientConsentProps> = ({ user, onConsentComplete
           onClick={handleSubmit}
           disabled={!isAllConsentGiven() || isSubmitting}
           className="consent-submit-btn"
+          title={!isAllConsentGiven() ? `Missing consents: ${Object.entries(consentData).filter(([key, value]) => key !== 'language' && !value).map(([key]) => key).join(', ')}` : ''}
         >
           {isSubmitting ? 'Saving...' : currentContent.submitButton}
         </button>
+        
+        {/* Debug info for development */}
+        {process.env.NODE_ENV === 'development' && (
+          <div style={{ marginTop: '1rem', padding: '0.5rem', background: '#f0f0f0', borderRadius: '4px', fontSize: '12px' }}>
+            <div>Debug: Button disabled = {(!isAllConsentGiven() || isSubmitting).toString()}</div>
+            <div>All consents given: {isAllConsentGiven().toString()}</div>
+            <div>Is submitting: {isSubmitting.toString()}</div>
+            <div>Consent data: {JSON.stringify(consentData, null, 2)}</div>
+          </div>
+        )}
 
         {/* Fallback button in case of errors */}
         {hasError && (
