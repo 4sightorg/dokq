@@ -1,0 +1,42 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isFacility(uid) {
+      return exists(/databases/$(database)/documents/facilities/$(uid));
+    }
+
+    match /patients/{userId} {
+      allow read: if isAuthenticated();
+
+      allow create, delete: if isAuthenticated() && request.auth.uid == userId;
+
+      allow update: if isAuthenticated() && (
+        request.auth.uid == userId || (
+          isFacility(request.auth.uid) &&
+          request.resource.data.diff(resource.data).changedKeys().hasOnly(['activity', 'updatedAt'])
+        )
+      );
+    }
+    
+    match /facilities/{facilityId} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated() && request.auth.uid == facilityId;
+    }
+    
+    match /counters/{document=**} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    match /appointments/{document=**} {
+      allow read, write: if isAuthenticated();
+    }
+    
+    match /documentData/{documentId} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}
