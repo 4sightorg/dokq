@@ -185,8 +185,63 @@ body {
 }
 
 .main-hero {
-  background-color: var(--bg-secondary);
   position: relative;
+  /* Soft gradient base */
+  background:
+    radial-gradient(
+      circle at 20% 15%,
+      rgba(59, 130, 246, 0.12),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 85% 10%,
+      rgba(99, 102, 241, 0.1),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 85% 85%,
+      rgba(16, 185, 129, 0.1),
+      transparent 35%
+    ),
+    linear-gradient(180deg, #f6f9ff 0%, #f8fafc 40%, #eef7ff 100%);
+  overflow: hidden;
+}
+
+/* Decorative gradient blob on the right side */
+.main-hero::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  right: -15%;
+  width: 55vw;
+  max-width: 900px;
+  height: 55vw;
+  max-height: 900px;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(59, 130, 246, 0.18),
+    rgba(59, 130, 246, 0.12) 35%,
+    rgba(59, 130, 246, 0.06) 60%,
+    transparent 65%
+  );
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+/* Subtle diagonal pattern for depth */
+.main-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(135deg, rgba(0, 64, 231, 0.06) 0%, rgba(0, 64, 231, 0) 40%),
+    repeating-linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.02) 0 2px,
+      transparent 2px 6px
+    );
+  mix-blend-mode: normal;
+  pointer-events: none;
 }
 
 .hero-container {
