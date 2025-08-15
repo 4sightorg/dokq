@@ -36,15 +36,15 @@ npm run start
 
 ## Tech Stack
 
-|Category|Tools|
-|---|---|
-|![HTML 5 Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/HTML/html2.svg) ![CSS Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/CSS/css2.svg) ![JS Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Javascript/javascript2.svg)|Front-end|
-|![Tailwind Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/TailwindCSS/tailwindcss2.svg)|Styling|
-|![Typescript Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/TypeScript/typescript2.svg)|Front-end / Back-end|
-|![React Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/React/react2.svg) ![Vite.js Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/ViteJS/vitejs2.svg)|JS Framework|
-|![Express Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Express/express1.svg) ![Node.js Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/NodeJS/nodejs2.svg)|Back-end|
-|![alt text](https://ziadoua.github.io/m3-Markdown-Badges/badges/Firebase/firebase2.svg)|Database & Authentication|
-|![Prettier Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Prettier/prettier2.svg) ![alt text](https://ziadoua.github.io/m3-Markdown-Badges/badges/ESLint/eslint2.svg)|Code Style Checker/Linter|
+| Category                                                                                                                                                                                                                                                          | Tools                     |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| ![HTML 5 Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/HTML/html2.svg) ![CSS Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/CSS/css2.svg) ![JS Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Javascript/javascript2.svg) | Front-end                 |
+| ![Tailwind Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/TailwindCSS/tailwindcss2.svg)                                                                                                                                                              | Styling                   |
+| ![Typescript Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/TypeScript/typescript2.svg)                                                                                                                                                              | Front-end / Back-end      |
+| ![React Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/React/react2.svg) ![Vite.js Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/ViteJS/vitejs2.svg)                                                                                   | JS Framework              |
+| ![Express Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Express/express1.svg) ![Node.js Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/NodeJS/nodejs2.svg)                                                                             | Back-end                  |
+| ![alt text](https://ziadoua.github.io/m3-Markdown-Badges/badges/Firebase/firebase2.svg)                                                                                                                                                                           | Database & Authentication |
+| ![Prettier Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Prettier/prettier2.svg) ![alt text](https://ziadoua.github.io/m3-Markdown-Badges/badges/ESLint/eslint2.svg)                                                                                | Code Style Checker/Linter |
 
 ## AI Notice
 
