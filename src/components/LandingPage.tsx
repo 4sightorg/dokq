@@ -223,7 +223,8 @@ const LandingPage: React.FC = () => {
           </div>
 
           <nav
-            className='header-actions'
+            className='header-actions landing-header-actions'
+            style={{ display: 'flex' }}
             role='navigation'
             aria-label='Main navigation'
           >

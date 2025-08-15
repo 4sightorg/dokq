@@ -148,6 +148,11 @@ body {
   padding: 0.5rem 0;
 }
 
+/* Ensure LandingPage header actions stay visible */
+.landing-header-actions {
+  display: flex;
+}
+
 .login-btn {
   color: var(--text-secondary);
   text-decoration: none;
@@ -629,7 +634,22 @@ body {
   }
 
   .header-actions {
-    display: none;
+    display: flex;
+    gap: 8px;
+  }
+
+  .landing-header-actions {
+    display: flex !important;
+  }
+
+  .login-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .register-btn {
+    padding: 0.5rem 0.9rem;
+    font-size: 0.875rem;
   }
 
   .hero-left h1 {
