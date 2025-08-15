@@ -249,7 +249,17 @@ const LandingPage: React.FC = () => {
       <main id='main-content' className='main-hero' role='main'>
         <div className='hero-container'>
           <div className='hero-content'>
-            <div className='hero-left'></div>
+            <div className='hero-left'>
+              <h1>DokQ — Hanap Klinika at Ospital, Book Agad.</h1>
+              <h2>
+                Mas mabilis, maayos, at walang abalang pagpapa‑appointment
+              </h2>
+              <p className='consultation-types'>
+                Maghanap ng mga healthcare provider — mga klinika at ospital —
+                tingnan ang detalye, at mag‑book ng konsultasyon o serbisyo
+                (online o in‑person). Para sa bawat Pilipino.
+              </p>
+            </div>
           </div>
         </div>
 
