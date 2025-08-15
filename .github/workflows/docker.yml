@@ -40,8 +40,8 @@ jobs:
         with:
           context: .
           tags: |
-            ghcr.io/kuya-carlo/dokq:latest
-            ghcr.io/kuya-carlo/dokq:${{ github.ref_name }}
+            ghcr.io/4sightorg/dokq:latest
+            ghcr.io/4sightorg/dokq:${{ github.ref_name }}
           push: true
 
       - name: Show image digest
