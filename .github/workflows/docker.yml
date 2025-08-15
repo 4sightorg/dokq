@@ -8,6 +8,7 @@ on:
       - LICENSE
       - 'example.flaskenv'
       - '.gitattributes'
+      - 'README.md'
       - '.github/workflows/docker.yml'
       - '.dockerignore'
   workflow_dispatch:
