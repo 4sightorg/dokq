@@ -15,6 +15,7 @@ import {
   sendEmailVerification,
   updateProfile,
 } from 'firebase/auth';
+import PatientConsent from './PatientConsent';
 import '../styles/patientSign-up.css';
 import '../styles/csp-utilities.css';
 
@@ -72,6 +73,8 @@ const PatientSignUp: React.FC = React.memo(() => {
   const [isFormValid, setIsFormValid] = useState(false);
   // Removed unused lastActivity state
   const [formProgress, setFormProgress] = useState(0);
+  const [showConsent, setShowConsent] = useState(false);
+  const [registeredUser, setRegisteredUser] = useState<any>(null);
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -427,7 +430,7 @@ const PatientSignUp: React.FC = React.memo(() => {
           await sendEmailVerification(userCredential.user);
 
           showSuccess(
-            'Account created successfully! Please check your email for verification.'
+            'Account created successfully! Please provide consent to continue.'
           );
 
           // Save successful registration time
@@ -436,10 +439,9 @@ const PatientSignUp: React.FC = React.memo(() => {
             new Date().toISOString()
           );
 
-          // Redirect after a short delay
-          setTimeout(() => {
-            navigate('/patient-portal');
-          }, 2000);
+          // Set user and show consent form
+          setRegisteredUser(userCredential.user);
+          setShowConsent(true);
         }
       } catch (error: any) {
         console.error('Sign up error:', error);
@@ -587,7 +589,7 @@ const PatientSignUp: React.FC = React.memo(() => {
         }
 
         // Show success message
-        showSuccess('Google sign-up successful! Welcome to DokQ!');
+        showSuccess('Google sign-up successful! Please provide consent to continue.');
 
         // Save successful registration time
         localStorage.setItem(
@@ -595,14 +597,11 @@ const PatientSignUp: React.FC = React.memo(() => {
           new Date().toISOString()
         );
 
-        // Redirect immediately after successful authentication
-        console.log('Redirecting to patient portal...');
-        console.log('User UID:', result.user.uid);
-        console.log('User email:', result.user.email);
-        console.log('User display name:', result.user.displayName);
-
-        // Force redirect to patient portal
-        window.location.href = '/patient-portal';
+        // Set user and show consent form
+        console.log('🎯 Setting registered user and showing consent form...');
+        setRegisteredUser(result.user);
+        setShowConsent(true);
+        console.log('✅ Consent form should now be visible');
       }
     } catch (error: any) {
       console.error('Google sign-up failed:', error);
@@ -663,6 +662,22 @@ const PatientSignUp: React.FC = React.memo(() => {
 
   const handleClose = useCallback(() => {
     navigate('/');
+  }, [navigate]);
+
+  const handleConsentComplete = useCallback(() => {
+    console.log('🎯 Consent completed, attempting navigation...');
+    setShowConsent(false);
+    // Redirect to patient portal after consent is given
+    try {
+      console.log('🚀 Navigating to /patient-portal...');
+      navigate('/patient-portal');
+      console.log('✅ Navigation successful');
+    } catch (error) {
+      console.error('❌ Navigation error:', error);
+      // Fallback to dashboard if patient-portal route doesn't exist
+      console.log('🔄 Falling back to /dashboard...');
+      navigate('/dashboard');
+    }
   }, [navigate]);
 
   // Keyboard navigation support
@@ -1180,6 +1195,25 @@ const PatientSignUp: React.FC = React.memo(() => {
           )}
         </div>
       </div>
+
+      {/* Consent Form Modal */}
+      {showConsent && registeredUser && (
+        <div className="consent-modal-overlay">
+          <div className="consent-modal">
+            <PatientConsent 
+              user={registeredUser} 
+              onConsentComplete={handleConsentComplete} 
+            />
+          </div>
+        </div>
+      )}
+      
+      {/* Debug Info */}
+      {process.env.NODE_ENV === 'development' && (
+        <div style={{ position: 'fixed', bottom: '10px', right: '10px', background: '#333', color: 'white', padding: '10px', borderRadius: '5px', fontSize: '12px', zIndex: 9999 }}>
+          Debug: showConsent={showConsent.toString()}, registeredUser={registeredUser ? 'Yes' : 'No'}
+        </div>
+      )}
     </div>
   );
 });

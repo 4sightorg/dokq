@@ -1,0 +1,352 @@
+.consent-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+.consent-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid #e3f2fd;
+}
+
+.consent-header h1 {
+  color: #1976d2;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.consent-subtitle {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.language-toggle {
+  margin-top: 1rem;
+}
+
+.language-btn {
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+}
+
+.language-btn:hover {
+  background: #1565c0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.4);
+}
+
+.compliance-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #1976d2;
+}
+
+.fhir-section,
+.privacy-section {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.fhir-section h3,
+.privacy-section h3 {
+  color: #1976d2;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.fhir-section p,
+.privacy-section p {
+  color: #555;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+.compliance-details,
+.privacy-details {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.compliance-item,
+.privacy-item {
+  padding: 0.5rem;
+  background: #f5f5f5;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.compliance-item strong,
+.privacy-item strong {
+  color: #1976d2;
+  margin-right: 0.5rem;
+}
+
+.consent-form {
+  background: #fafafa;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.required-note {
+  text-align: center;
+  color: #d32f2f;
+  font-weight: 600;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: #ffebee;
+  border-radius: 6px;
+  border-left: 4px solid #d32f2f;
+}
+
+.consent-item {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.consent-item:hover {
+  border-color: #1976d2;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.1);
+}
+
+.consent-checkbox {
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  gap: 1rem;
+}
+
+.consent-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  position: relative;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.consent-checkbox input[type="checkbox"]:checked + .checkmark {
+  background: #1976d2;
+  border-color: #1976d2;
+}
+
+.consent-checkbox input[type="checkbox"]:checked + .checkmark::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.consent-text {
+  flex: 1;
+}
+
+.consent-text strong {
+  display: block;
+  color: #1976d2;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.consent-text p {
+  color: #555;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.error-message {
+  background: #ffebee;
+  color: #d32f2f;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+  border-left: 4px solid #d32f2f;
+  font-weight: 500;
+}
+
+.consent-submit-btn {
+  width: 100%;
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+}
+
+.consent-submit-btn:hover:not(:disabled) {
+  background: #1565c0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.4);
+}
+
+.consent-submit-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .consent-container {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  .consent-header h1 {
+    font-size: 2rem;
+  }
+
+  .compliance-info {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .consent-form {
+    padding: 1rem;
+  }
+
+  .consent-checkbox {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .checkmark {
+    align-self: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .consent-container {
+    padding: 0.5rem;
+    margin: 0.5rem;
+  }
+
+  .consent-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .consent-subtitle {
+    font-size: 1rem;
+  }
+
+  .fhir-section,
+  .privacy-section {
+    padding: 1rem;
+  }
+
+  .consent-form {
+    padding: 0.75rem;
+  }
+}
+
+/* Accessibility Improvements */
+.consent-checkbox:focus-within .checkmark {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+.consent-submit-btn:focus {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .consent-container {
+    border: 2px solid #000;
+  }
+
+  .consent-header h1 {
+    color: #000;
+  }
+
+  .consent-text strong {
+    color: #000;
+  }
+
+  .checkmark {
+    border-width: 3px;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .consent-item,
+  .consent-submit-btn,
+  .language-btn {
+    transition: none;
+  }
+
+  .consent-submit-btn:hover:not(:disabled),
+  .language-btn:hover {
+    transform: none;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .consent-container {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+
+  .language-toggle,
+  .consent-submit-btn {
+    display: none;
+  }
+
+  .consent-checkbox input[type="checkbox"]:checked + .checkmark {
+    background: #000;
+    border-color: #000;
+  }
+}
