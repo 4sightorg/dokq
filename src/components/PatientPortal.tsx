@@ -2364,7 +2364,7 @@ const PatientPortal: React.FC = () => {
             aria-expanded={isSidebarOpen}
             aria-controls='sidebar-navigation'
           >
-            <i className='fas fa-bars' aria-hidden='true'></i>
+            <i className="" aria-hidden="true"></i>
           </button>
         </div>
 
