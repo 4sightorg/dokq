@@ -1,0 +1,3 @@
+services:
+  docq:
+    image: ghcr.io/kuya-carlo/docq
