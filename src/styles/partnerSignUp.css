@@ -35,8 +35,6 @@
   color: var(--text-secondary);
 }
 
-
-
 /* Form Styles */
 .signup-form {
   margin-bottom: 2rem;
@@ -292,27 +290,21 @@
   opacity: 0.8;
 }
 
-
-
-
-
-
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .partner-signup-container {
     padding: 1rem;
   }
-  
+
   .signup-content {
     padding: 1.5rem;
   }
-  
+
   .signup-header h1 {
     font-size: 1.75rem;
   }
-  
+
   .form-actions {
     flex-direction: column;
   }
-} 
+}

@@ -6,9 +6,11 @@ class ConfigValidator {
   }
   detectProduction() {
     return (
-      (typeof process !== 'undefined' && process.env?.NODE_ENV === 'production') ||
+      (typeof process !== 'undefined' &&
+        process.env?.NODE_ENV === 'production') ||
       (typeof import.meta !== 'undefined' && import.meta.env?.PROD === true) ||
-      (typeof window !== 'undefined' && !['localhost', '127.0.0.1'].includes(window.location.hostname))
+      (typeof window !== 'undefined' &&
+        !['localhost', '127.0.0.1'].includes(window.location.hostname))
     );
   }
   validateRequired(envVars, context = 'application') {
@@ -28,17 +30,23 @@ class ConfigValidator {
       }
       if (config.format && !this.validateFormat(value, config.format)) {
         invalid.push({ key, value, reason: 'invalid_format' });
-        console.log(`❌ Invalid format for: ${key} (expected: ${config.format})`);
+        console.log(
+          `❌ Invalid format for: ${key} (expected: ${config.format})`
+        );
         continue;
       }
       if (config.minLength && value.length < config.minLength) {
         invalid.push({ key, value, reason: 'too_short' });
-        console.log(`❌ Too short for: ${key} (min: ${config.minLength}, got: ${value.length})`);
+        console.log(
+          `❌ Too short for: ${key} (min: ${config.minLength}, got: ${value.length})`
+        );
         continue;
       }
       if (config.maxLength && value.length > config.maxLength) {
         invalid.push({ key, value, reason: 'too_long' });
-        console.log(`❌ Too long for: ${key} (max: ${config.maxLength}, got: ${value.length})`);
+        console.log(
+          `❌ Too long for: ${key} (max: ${config.maxLength}, got: ${value.length})`
+        );
         continue;
       }
       console.log(`✅ Validated ${key} successfully`);
@@ -57,14 +65,18 @@ class ConfigValidator {
     if (typeof process !== 'undefined' && process.env) {
       const value = process.env[key];
       if (value) {
-        console.log(`🔍 Found ${key} in process.env: ${value.substring(0, 10)}...`);
+        console.log(
+          `🔍 Found ${key} in process.env: ${value.substring(0, 10)}...`
+        );
         return value;
       }
     }
     if (typeof import.meta !== 'undefined' && import.meta.env) {
       const value = import.meta.env[key];
       if (value) {
-        console.log(`🔍 Found ${key} in import.meta.env: ${value.substring(0, 10)}...`);
+        console.log(
+          `🔍 Found ${key} in import.meta.env: ${value.substring(0, 10)}...`
+        );
         return value;
       }
     }
@@ -91,11 +103,12 @@ class ConfigValidator {
       'path/to/firebase-service-account.json',
       'your-service-account@project.iam.gserviceaccount.com',
       'your-private-key-here',
-      'placeholder_key_for_development_only'
+      'placeholder_key_for_development_only',
     ];
-    return placeholders.some(placeholder => 
-      value.toLowerCase() === placeholder.toLowerCase() ||
-      value.toLowerCase().includes('placeholder_key_for_development_only')
+    return placeholders.some(
+      placeholder =>
+        value.toLowerCase() === placeholder.toLowerCase() ||
+        value.toLowerCase().includes('placeholder_key_for_development_only')
     );
   }
   validateFormat(value, format) {
@@ -107,8 +120,9 @@ class ConfigValidator {
           if (value.includes('.firebaseapp.com')) {
             return /^[a-z0-9-]+\.firebaseapp\.com$/.test(value);
           }
-          const urlToTest = value.startsWith('http') ? value : `https:
-          new URL(urlToTest);
+          const urlToTest = value.startsWith('http')
+            ? value
+            : `https:${new URL(urlToTest)}`;
           return true;
         } catch {
           return false;
@@ -118,19 +132,25 @@ class ConfigValidator {
       case 'firebase-project-id':
         return /^[a-z0-9-]+$/.test(value) && value.length >= 6;
       case 'jwt-secret':
-        return value.length >= 32 && /[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(value);
+        return (
+          value.length >= 32 &&
+          /[A-Za-z0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(value)
+        );
       default:
         return true;
     }
   }
   generateSecureFallback(type, length = 32) {
     if (this.isProduction) {
-      throw new Error(`Cannot generate fallback values in production for ${type}`);
+      throw new Error(
+        `Cannot generate fallback values in production for ${type}`
+      );
     }
     if (type === 'firebase-api-key') {
       return 'AIzaSyC_placeholder_key_for_development_only_123456789';
     }
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+    const chars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
     let result = '';
     for (let i = 0; i < length; i++) {
       result += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -139,18 +159,26 @@ class ConfigValidator {
   }
   validateFirebaseConfig() {
     const firebaseConfig = {
-      VITE_FIREBASE_API_KEY: { format: 'firebase-api-key', minLength: 39, maxLength: 39 },
+      VITE_FIREBASE_API_KEY: {
+        format: 'firebase-api-key',
+        minLength: 39,
+        maxLength: 39,
+      },
       VITE_FIREBASE_AUTH_DOMAIN: { format: 'url', minLength: 10 },
-      VITE_FIREBASE_PROJECT_ID: { format: 'firebase-project-id', minLength: 6, maxLength: 30 },
+      VITE_FIREBASE_PROJECT_ID: {
+        format: 'firebase-project-id',
+        minLength: 6,
+        maxLength: 30,
+      },
       VITE_FIREBASE_STORAGE_BUCKET: { minLength: 10 },
       VITE_FIREBASE_MESSAGING_SENDER_ID: { minLength: 9, maxLength: 12 },
-      VITE_FIREBASE_APP_ID: { minLength: 20, maxLength: 50 }
+      VITE_FIREBASE_APP_ID: { minLength: 20, maxLength: 50 },
     };
     return this.validateRequired(firebaseConfig, 'Firebase');
   }
   validateJWTConfig() {
     const jwtConfig = {
-      JWT_SECRET: { format: 'jwt-secret', minLength: 32 }
+      JWT_SECRET: { format: 'jwt-secret', minLength: 32 },
     };
     return this.validateRequired(jwtConfig, 'JWT');
   }
@@ -167,20 +195,25 @@ class ConfigValidator {
           authDomain: this.getEnvValue('VITE_FIREBASE_AUTH_DOMAIN'),
           projectId: this.getEnvValue('VITE_FIREBASE_PROJECT_ID'),
           storageBucket: this.getEnvValue('VITE_FIREBASE_STORAGE_BUCKET'),
-          messagingSenderId: this.getEnvValue('VITE_FIREBASE_MESSAGING_SENDER_ID'),
+          messagingSenderId: this.getEnvValue(
+            'VITE_FIREBASE_MESSAGING_SENDER_ID'
+          ),
           appId: this.getEnvValue('VITE_FIREBASE_APP_ID'),
-          measurementId: this.getEnvValue('VITE_FIREBASE_MEASUREMENT_ID')
+          measurementId: this.getEnvValue('VITE_FIREBASE_MEASUREMENT_ID'),
         },
         jwt: {
-          secret: jwtSecret || this.generateSecureFallback('jwt-secret', 64)
+          secret: jwtSecret || this.generateSecureFallback('jwt-secret', 64),
         },
-        environment: this.isProduction ? 'production' : 'development'
+        environment: this.isProduction ? 'production' : 'development',
       };
     } catch (error) {
       if (this.isProduction) {
         throw error;
       } else {
-        console.warn('⚠️ Using secure fallback values for development:', error.message);
+        console.warn(
+          '⚠️ Using secure fallback values for development:',
+          error.message
+        );
         return this.generateDevelopmentConfig();
       }
     }
@@ -194,14 +227,14 @@ class ConfigValidator {
         storageBucket: 'dev-project.appspot.com',
         messagingSenderId: '123456789012',
         appId: '1:123456789012:web:abcdef1234567890',
-        measurementId: 'G-DEVXXXXXXXX'
+        measurementId: 'G-DEVXXXXXXXX',
       },
       jwt: {
-        secret: this.generateSecureFallback('jwt-secret', 64)
+        secret: this.generateSecureFallback('jwt-secret', 64),
       },
-      environment: 'development'
+      environment: 'development',
     };
   }
 }
 const configValidator = new ConfigValidator();
-export default configValidator; 
+export default configValidator;

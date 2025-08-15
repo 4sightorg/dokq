@@ -31,12 +31,12 @@ class JWTHelper {
       expiresIn: options.expiresIn || this.expiresIn,
       issuer: options.issuer || 'dokq-healthcare',
       audience: options.audience || 'dokq-users',
-      ...options
+      ...options,
     };
     const securePayload = {
       ...payload,
       iat: Math.floor(Date.now() / 1000),
-      jti: this.generateTokenId()
+      jti: this.generateTokenId(),
     };
     return jwt.sign(securePayload, this.secret, tokenOptions);
   }
@@ -51,7 +51,7 @@ class JWTHelper {
       algorithms: [this.algorithm],
       issuer: options.issuer || 'dokq-healthcare',
       audience: options.audience || 'dokq-users',
-      ...options
+      ...options,
     };
     try {
       const decoded = jwt.verify(token, this.secret, verifyOptions);

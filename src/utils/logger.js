@@ -1,118 +1,119 @@
 import environment from './environment.js';
 class Logger {
-    constructor() {
-        this.isProduction = environment.isProduction();
-        this.isDevelopment = environment.isDevelopment();
-        this.levels = {
-            error: 0,
-            warn: 1,
-            info: 2,
-            debug: 3,
-            trace: 4
-        };
-        this.currentLevel = this.isProduction ? this.levels.warn : this.levels.debug;
+  constructor() {
+    this.isProduction = environment.isProduction();
+    this.isDevelopment = environment.isDevelopment();
+    this.levels = {
+      error: 0,
+      warn: 1,
+      info: 2,
+      debug: 3,
+      trace: 4,
+    };
+    this.currentLevel = this.isProduction
+      ? this.levels.warn
+      : this.levels.debug;
+  }
+  shouldLog(level) {
+    return this.levels[level] <= this.currentLevel;
+  }
+  formatMessage(level, message, ...args) {
+    if (this.isProduction) {
+      return [message, ...args];
     }
-    shouldLog(level) {
-        return this.levels[level] <= this.currentLevel;
+    const timestamp = new Date().toISOString().split('T')[1].split('.')[0];
+    const levelIcon = {
+      error: '❌',
+      warn: '⚠️',
+      info: 'ℹ️',
+      debug: '🐛',
+      trace: '🔍',
+    };
+    return [`${levelIcon[level]} [${timestamp}] ${message}`, ...args];
+  }
+  error(message, ...args) {
+    if (this.shouldLog('error')) {
+      console.error(...this.formatMessage('error', message, ...args));
     }
-    formatMessage(level, message, ...args) {
-        if (this.isProduction) {
-            return [message, ...args];
-        }
-        const timestamp = new Date().toISOString().split('T')[1].split('.')[0];
-        const levelIcon = {
-            error: '❌',
-            warn: '⚠️',
-            info: 'ℹ️',
-            debug: '🐛',
-            trace: '🔍'
-        };
-        return [
-            `${levelIcon[level]} [${timestamp}] ${message}`,
-            ...args
-        ];
+  }
+  warn(message, ...args) {
+    if (this.shouldLog('warn')) {
+      console.warn(...this.formatMessage('warn', message, ...args));
     }
-    error(message, ...args) {
-        if (this.shouldLog('error')) {
-            console.error(...this.formatMessage('error', message, ...args));
-        }
+  }
+  info(message, ...args) {
+    if (this.shouldLog('info')) {
+      console.info(...this.formatMessage('info', message, ...args));
     }
-    warn(message, ...args) {
-        if (this.shouldLog('warn')) {
-            console.warn(...this.formatMessage('warn', message, ...args));
-        }
+  }
+  debug(message, ...args) {
+    if (this.shouldLog('debug')) {
+      console.log(...this.formatMessage('debug', message, ...args));
     }
-    info(message, ...args) {
-        if (this.shouldLog('info')) {
-            console.info(...this.formatMessage('info', message, ...args));
-        }
+  }
+  trace(message, ...args) {
+    if (this.shouldLog('trace')) {
+      console.trace(...this.formatMessage('trace', message, ...args));
     }
-    debug(message, ...args) {
-        if (this.shouldLog('debug')) {
-            console.log(...this.formatMessage('debug', message, ...args));
-        }
+  }
+  group(groupName, callback) {
+    if (this.isDevelopment) {
+      console.group(groupName);
+      try {
+        callback();
+      } finally {
+        console.groupEnd();
+      }
+    } else {
+      callback();
     }
-    trace(message, ...args) {
-        if (this.shouldLog('trace')) {
-            console.trace(...this.formatMessage('trace', message, ...args));
-        }
+  }
+  time(label) {
+    if (this.isDevelopment) {
+      console.time(label);
     }
-    group(groupName, callback) {
-        if (this.isDevelopment) {
-            console.group(groupName);
-            try {
-                callback();
-            } finally {
-                console.groupEnd();
-            }
-        } else {
-            callback();
-        }
+  }
+  timeEnd(label) {
+    if (this.isDevelopment) {
+      console.timeEnd(label);
     }
-    time(label) {
-        if (this.isDevelopment) {
-            console.time(label);
-        }
+  }
+  table(data) {
+    if (this.isDevelopment) {
+      console.table(data);
     }
-    timeEnd(label) {
-        if (this.isDevelopment) {
-            console.timeEnd(label);
-        }
+  }
+  setLevel(level) {
+    if (this.levels.hasOwnProperty(level)) {
+      this.currentLevel = this.levels[level];
     }
-    table(data) {
-        if (this.isDevelopment) {
-            console.table(data);
-        }
+  }
+  dev(message, ...args) {
+    if (this.isDevelopment) {
+      console.log(`🔧 [DEV]`, message, ...args);
     }
-    setLevel(level) {
-        if (this.levels.hasOwnProperty(level)) {
-            this.currentLevel = this.levels[level];
-        }
+  }
+  performance(operation, duration) {
+    if (this.isDevelopment) {
+      console.log(`⚡ Performance: ${operation} took ${duration.toFixed(2)}ms`);
+    } else if (duration > 1000) {
+      this.warn(
+        `Slow operation detected: ${operation} took ${duration.toFixed(2)}ms`
+      );
     }
-    dev(message, ...args) {
-        if (this.isDevelopment) {
-            console.log(`🔧 [DEV]`, message, ...args);
-        }
-    }
-    performance(operation, duration) {
-        if (this.isDevelopment) {
-            console.log(`⚡ Performance: ${operation} took ${duration.toFixed(2)}ms`);
-        } else if (duration > 1000) {
-            this.warn(`Slow operation detected: ${operation} took ${duration.toFixed(2)}ms`);
-        }
-    }
+  }
 }
 const logger = new Logger();
 export const developmentConsole = {
-    log: (...args) => logger.debug(...args),
-    info: (...args) => logger.info(...args),
-    warn: (...args) => logger.warn(...args),
-    error: (...args) => logger.error(...args),
-    debug: (...args) => logger.debug(...args),
-    trace: (...args) => logger.trace(...args),
-    group: (name, callback) => logger.group(name, callback),
-    time: (label) => logger.time(label),
-    timeEnd: (label) => logger.timeEnd(label),
-    table: (data) => logger.table(data)
+  log: (...args) => logger.debug(...args),
+  info: (...args) => logger.info(...args),
+  warn: (...args) => logger.warn(...args),
+  error: (...args) => logger.error(...args),
+  debug: (...args) => logger.debug(...args),
+  trace: (...args) => logger.trace(...args),
+  group: (name, callback) => logger.group(name, callback),
+  time: label => logger.time(label),
+  timeEnd: label => logger.timeEnd(label),
+  table: data => logger.table(data),
 };
-export default logger; 
+export default logger;

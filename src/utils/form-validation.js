@@ -16,23 +16,24 @@ class FormValidator {
         }
         return value !== null && value !== undefined && value !== '';
       },
-      message: 'This field is required'
+      message: 'This field is required',
     });
     this.validators.set('email', {
-      validate: (value) => {
+      validate: value => {
         if (!value) return true;
-        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+        const emailRegex =
+          /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
         return emailRegex.test(value.trim());
       },
-      message: 'Please enter a valid email address'
+      message: 'Please enter a valid email address',
     });
     this.validators.set('phone', {
-      validate: (value) => {
+      validate: value => {
         if (!value) return true;
         const phoneRegex = /^(\+63|0)[0-9]{10}$/;
         return phoneRegex.test(value.replace(/[\s\-\(\)]/g, ''));
       },
-      message: 'Please enter a valid Philippine phone number'
+      message: 'Please enter a valid Philippine phone number',
     });
     this.validators.set('minLength', {
       validate: (value, params) => {
@@ -40,7 +41,7 @@ class FormValidator {
         const minLength = parseInt(params) || 0;
         return value.trim().length >= minLength;
       },
-      message: (params) => `Must be at least ${params} characters long`
+      message: params => `Must be at least ${params} characters long`,
     });
     this.validators.set('maxLength', {
       validate: (value, params) => {
@@ -48,7 +49,7 @@ class FormValidator {
         const maxLength = parseInt(params) || Infinity;
         return value.trim().length <= maxLength;
       },
-      message: (params) => `Must be no more than ${params} characters long`
+      message: params => `Must be no more than ${params} characters long`,
     });
     this.validators.set('pattern', {
       validate: (value, params) => {
@@ -56,36 +57,38 @@ class FormValidator {
         const pattern = new RegExp(params);
         return pattern.test(value);
       },
-      message: 'Please enter a value in the correct format'
+      message: 'Please enter a value in the correct format',
     });
     this.validators.set('numeric', {
-      validate: (value) => {
+      validate: value => {
         if (!value) return true;
         return /^\d+$/.test(value.trim());
       },
-      message: 'Please enter only numbers'
+      message: 'Please enter only numbers',
     });
     this.validators.set('alpha', {
-      validate: (value) => {
+      validate: value => {
         if (!value) return true;
         return /^[a-zA-Z\s]+$/.test(value.trim());
       },
-      message: 'Please enter only letters'
+      message: 'Please enter only letters',
     });
     this.validators.set('alphanumeric', {
-      validate: (value) => {
+      validate: value => {
         if (!value) return true;
         return /^[a-zA-Z0-9\s]+$/.test(value.trim());
       },
-      message: 'Please enter only letters and numbers'
+      message: 'Please enter only letters and numbers',
     });
     this.validators.set('password', {
-      validate: (value) => {
+      validate: value => {
         if (!value) return true;
-        const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
+        const strongPassword =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/;
         return strongPassword.test(value);
       },
-      message: 'Password must be at least 8 characters with uppercase, lowercase, and number'
+      message:
+        'Password must be at least 8 characters with uppercase, lowercase, and number',
     });
     this.validators.set('confirmPassword', {
       validate: (value, params, form) => {
@@ -93,41 +96,47 @@ class FormValidator {
         const passwordField = form.querySelector(`[name="${params}"]`);
         return passwordField ? value === passwordField.value : false;
       },
-      message: 'Passwords do not match'
+      message: 'Passwords do not match',
     });
     this.validators.set('date', {
-      validate: (value) => {
+      validate: value => {
         if (!value) return true;
         const date = new Date(value);
         return !isNaN(date.getTime());
       },
-      message: 'Please enter a valid date'
+      message: 'Please enter a valid date',
     });
     this.validators.set('minAge', {
       validate: (value, params) => {
         if (!value) return true;
         const birthDate = new Date(value);
         const today = new Date();
-        const age = Math.floor((today - birthDate) / (365.25 * 24 * 60 * 60 * 1000));
+        const age = Math.floor(
+          (today - birthDate) / (365.25 * 24 * 60 * 60 * 1000)
+        );
         return age >= parseInt(params);
       },
-      message: (params) => `Must be at least ${params} years old`
+      message: params => `Must be at least ${params} years old`,
     });
     this.validators.set('fileType', {
       validate: (files, params) => {
         if (!files || files.length === 0) return true;
-        const allowedTypes = params.split(',').map(type => type.trim().toLowerCase());
+        const allowedTypes = params
+          .split(',')
+          .map(type => type.trim().toLowerCase());
         for (let file of files) {
           const fileExtension = file.name.split('.').pop().toLowerCase();
           const mimeType = file.type.toLowerCase();
-          const isValidExtension = allowedTypes.some(type => 
-            type.startsWith('.') ? type.substring(1) === fileExtension : type === mimeType
+          const isValidExtension = allowedTypes.some(type =>
+            type.startsWith('.')
+              ? type.substring(1) === fileExtension
+              : type === mimeType
           );
           if (!isValidExtension) return false;
         }
         return true;
       },
-      message: (params) => `Allowed file types: ${params}`
+      message: params => `Allowed file types: ${params}`,
     });
     this.validators.set('fileSize', {
       validate: (files, params) => {
@@ -138,7 +147,7 @@ class FormValidator {
         }
         return true;
       },
-      message: (params) => `File size must be less than ${params}MB`
+      message: params => `File size must be less than ${params}MB`,
     });
   }
   initializeDefaultMessages() {
@@ -154,21 +163,22 @@ class FormValidator {
     this.rules.get(fieldName).push({
       validator: validatorName,
       params: params,
-      message: customMessage
+      message: customMessage,
     });
     return this;
   }
   addValidator(name, validator, defaultMessage) {
     this.validators.set(name, {
       validate: validator,
-      message: defaultMessage
+      message: defaultMessage,
     });
     return this;
   }
   initializeForm(formSelector, options = {}) {
-    const form = typeof formSelector === 'string' 
-      ? document.querySelector(formSelector) 
-      : formSelector;
+    const form =
+      typeof formSelector === 'string'
+        ? document.querySelector(formSelector)
+        : formSelector;
     if (!form) {
       return null;
     }
@@ -179,7 +189,7 @@ class FormValidator {
       debounceDelay: 300,
       scrollToError: true,
       focusFirstError: true,
-      ...options
+      ...options,
     };
     form.classList.add('validated-form');
     if (config.validateOnInput || config.validateOnBlur) {
@@ -192,16 +202,19 @@ class FormValidator {
       validate: () => this.validateForm(form),
       reset: () => this.resetForm(form),
       getErrors: () => this.getFormErrors(form),
-      isValid: () => this.isFormValid(form)
+      isValid: () => this.isFormValid(form),
     };
   }
   setupRealTimeValidation(form, config) {
     const fields = form.querySelectorAll('input, select, textarea');
     fields.forEach(field => {
       if (config.validateOnInput) {
-        field.addEventListener('input', this.debounce(() => {
-          this.validateField(field, form);
-        }, config.debounceDelay));
+        field.addEventListener(
+          'input',
+          this.debounce(() => {
+            this.validateField(field, form);
+          }, config.debounceDelay)
+        );
       }
       if (config.validateOnBlur) {
         field.addEventListener('blur', () => {
@@ -216,17 +229,21 @@ class FormValidator {
     });
   }
   setupFormSubmission(form, config) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', e => {
       e.preventDefault();
       const isValid = this.validateForm(form);
       if (isValid) {
-        form.dispatchEvent(new CustomEvent('formValid', {
-          detail: { formData: new FormData(form) }
-        }));
+        form.dispatchEvent(
+          new CustomEvent('formValid', {
+            detail: { formData: new FormData(form) },
+          })
+        );
       } else {
-        form.dispatchEvent(new CustomEvent('formInvalid', {
-          detail: { errors: this.getFormErrors(form) }
-        }));
+        form.dispatchEvent(
+          new CustomEvent('formInvalid', {
+            detail: { errors: this.getFormErrors(form) },
+          })
+        );
         if (config.scrollToError) {
           this.scrollToFirstError(form);
         }
@@ -299,7 +316,9 @@ class FormValidator {
       case 'checkbox':
         return field.checked;
       case 'radio':
-        const radioGroup = field.form.querySelectorAll(`[name="${field.name}"]`);
+        const radioGroup = field.form.querySelectorAll(
+          `[name="${field.name}"]`
+        );
         for (const radio of radioGroup) {
           if (radio.checked) return radio.value;
         }
@@ -314,13 +333,13 @@ class FormValidator {
   }
   getErrorMessage(rule, validator) {
     if (rule.message) {
-      return typeof rule.message === 'function' 
-        ? rule.message(rule.params) 
+      return typeof rule.message === 'function'
+        ? rule.message(rule.params)
         : rule.message;
     }
     if (validator.message) {
-      return typeof validator.message === 'function' 
-        ? validator.message(rule.params) 
+      return typeof validator.message === 'function'
+        ? validator.message(rule.params)
         : validator.message;
     }
     return this.errorMessages.get('generic');
@@ -338,7 +357,8 @@ class FormValidator {
       errorElement.className = 'field-error-message';
       errorElement.setAttribute('role', 'alert');
       errorElement.setAttribute('aria-live', 'polite');
-      const container = field.closest('.form-group, .field-container') || field.parentNode;
+      const container =
+        field.closest('.form-group, .field-container') || field.parentNode;
       container.appendChild(errorElement);
     }
     errorElement.textContent = message;
@@ -377,7 +397,8 @@ class FormValidator {
     this.insertFieldIcon(field, icon);
   }
   insertFieldIcon(field, icon) {
-    const container = field.closest('.form-group, .field-container') || field.parentNode;
+    const container =
+      field.closest('.form-group, .field-container') || field.parentNode;
     if (container.style.position !== 'relative') {
       container.style.position = 'relative';
     }
@@ -389,8 +410,11 @@ class FormValidator {
     container.appendChild(icon);
   }
   removeFieldIcons(field) {
-    const container = field.closest('.form-group, .field-container') || field.parentNode;
-    const icons = container.querySelectorAll('.field-error-icon, .field-success-icon');
+    const container =
+      field.closest('.form-group, .field-container') || field.parentNode;
+    const icons = container.querySelectorAll(
+      '.field-error-icon, .field-success-icon'
+    );
     icons.forEach(icon => icon.remove());
   }
   resetForm(form) {
@@ -401,11 +425,13 @@ class FormValidator {
     });
     form.classList.remove('form-valid', 'form-invalid');
     const errorMessages = form.querySelectorAll('.field-error-message');
-    errorMessages.forEach(msg => msg.style.display = 'none');
+    errorMessages.forEach(msg => (msg.style.display = 'none'));
   }
   getFormErrors(form) {
     const errors = {};
-    const errorElements = form.querySelectorAll('.field-error-message[style*="block"]');
+    const errorElements = form.querySelectorAll(
+      '.field-error-message[style*="block"]'
+    );
     errorElements.forEach(element => {
       const fieldName = element.id.replace('-error', '');
       errors[fieldName] = element.textContent;
@@ -418,9 +444,9 @@ class FormValidator {
   scrollToFirstError(form) {
     const firstError = form.querySelector('.field-error');
     if (firstError) {
-      firstError.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'center' 
+      firstError.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
       });
     }
   }
@@ -439,29 +465,26 @@ class FormValidator {
   }
   sanitizeInput(input) {
     if (typeof input !== 'string') return input;
-    return input
-      .replace(/[<>]/g, '')
-      .trim()
-      .substring(0, 1000);
+    return input.replace(/[<>]/g, '').trim().substring(0, 1000);
   }
   setupSearchForm(formSelector) {
     const validator = this;
     return this.initializeForm(formSelector, {
       validateOnInput: true,
-      debounceDelay: 300
+      debounceDelay: 300,
     });
   }
   setupRegistrationForm(formSelector) {
     return this.initializeForm(formSelector, {
       validateOnBlur: true,
       showSuccessStates: true,
-      scrollToError: true
+      scrollToError: true,
     });
   }
   setupContactForm(formSelector) {
     return this.initializeForm(formSelector, {
       validateOnInput: false,
-      validateOnBlur: true
+      validateOnBlur: true,
     });
   }
 }

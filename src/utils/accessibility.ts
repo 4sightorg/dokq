@@ -4,7 +4,9 @@ export const FocusManager = {
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
     const firstElement = focusableElements[0] as HTMLElement;
-    const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+    const lastElement = focusableElements[
+      focusableElements.length - 1
+    ] as HTMLElement;
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Tab') {
         if (event.shiftKey) {
@@ -27,7 +29,9 @@ export const FocusManager = {
     };
   },
   returnFocus(): void {
-    const previousElement = document.querySelector('[data-previous-focus]') as HTMLElement;
+    const previousElement = document.querySelector(
+      '[data-previous-focus]'
+    ) as HTMLElement;
     if (previousElement) {
       previousElement.focus();
       previousElement.removeAttribute('data-previous-focus');
@@ -39,7 +43,7 @@ export const FocusManager = {
       currentElement.setAttribute('data-previous-focus', 'true');
     }
     newElement.focus();
-  }
+  },
 };
 export const ScreenReader = {
   announce(message: string, priority: 'polite' | 'assertive' = 'polite'): void {
@@ -61,9 +65,12 @@ export const ScreenReader = {
   },
   announceValidationErrors(errors: string[]): void {
     if (errors.length > 0) {
-      this.announce(`Form has ${errors.length} validation error${errors.length > 1 ? 's' : ''}: ${errors.join(', ')}`, 'assertive');
+      this.announce(
+        `Form has ${errors.length} validation error${errors.length > 1 ? 's' : ''}: ${errors.join(', ')}`,
+        'assertive'
+      );
     }
-  }
+  },
 };
 export const KeyboardNavigation = {
   handleArrowNavigation(
@@ -99,7 +106,7 @@ export const KeyboardNavigation = {
     } else if (key === 'End' && items.length > 0) {
       items[items.length - 1].focus();
     }
-  }
+  },
 };
 export const ColorContrast = {
   getRelativeLuminance(r: number, g: number, b: number): number {
@@ -128,27 +135,34 @@ export const ColorContrast = {
     const ratio = this.getContrastRatio(l1, l2);
     const requirements = {
       AA: { normal: 4.5, large: 3 },
-      AAA: { normal: 7, large: 4.5 }
+      AAA: { normal: 7, large: 4.5 },
     };
     return ratio >= requirements[level][size];
   },
   hexToRgb(hex: string): { r: number; g: number; b: number } | null {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    return result ? {
-      r: parseInt(result[1], 16),
-      g: parseInt(result[2], 16),
-      b: parseInt(result[3], 16)
-    } : null;
-  }
+    return result
+      ? {
+          r: parseInt(result[1], 16),
+          g: parseInt(result[2], 16),
+          b: parseInt(result[3], 16),
+        }
+      : null;
+  },
 };
 export const FormAccessibility = {
-  associateLabelWithControl(label: HTMLLabelElement, control: HTMLElement): void {
-    const id = control.id || `control-${Math.random().toString(36).substr(2, 9)}`;
+  associateLabelWithControl(
+    label: HTMLLabelElement,
+    control: HTMLElement
+  ): void {
+    const id =
+      control.id || `control-${Math.random().toString(36).substr(2, 9)}`;
     control.id = id;
     label.setAttribute('for', id);
   },
   associateErrorWithControl(error: HTMLElement, control: HTMLElement): void {
-    const errorId = error.id || `error-${Math.random().toString(36).substr(2, 9)}`;
+    const errorId =
+      error.id || `error-${Math.random().toString(36).substr(2, 9)}`;
     error.id = errorId;
     error.setAttribute('role', 'alert');
     error.setAttribute('aria-live', 'assertive');
@@ -166,7 +180,7 @@ export const FormAccessibility = {
     requiredText.className = 'required-indicator';
     requiredText.setAttribute('aria-label', 'required');
     label.appendChild(requiredText);
-  }
+  },
 };
 export const AnimationAccessibility = {
   prefersReducedMotion(): boolean {
@@ -196,14 +210,14 @@ export const AnimationAccessibility = {
       }
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
-  }
+  },
 };
 export const SkipLinks = {
   createSkipLinks(): void {
     const skipLinks = [
       { href: '#main-content', text: 'Skip to main content' },
       { href: '#navigation', text: 'Skip to navigation' },
-      { href: '#footer', text: 'Skip to footer' }
+      { href: '#footer', text: 'Skip to footer' },
     ];
     const skipContainer = document.createElement('div');
     skipContainer.className = 'skip-links';
@@ -217,5 +231,5 @@ export const SkipLinks = {
       skipContainer.appendChild(skipLink);
     });
     document.body.insertBefore(skipContainer, document.body.firstChild);
-  }
-}; 
+  },
+};

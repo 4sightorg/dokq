@@ -79,19 +79,19 @@ export const ImageOptimizer = {
     images.forEach(img => imageObserver.observe(img));
   },
   generateSrcSet(baseUrl: string, widths: number[]): string {
-    return widths
-      .map(width => `${baseUrl}?w=${width} ${width}w`)
-      .join(', ');
-  }
+    return widths.map(width => `${baseUrl}?w=${width} ${width}w`).join(', ');
+  },
 };
 export const BundleOptimizer = {
   trackBundleSize(): void {
     if (process.env.NODE_ENV === 'development') {
-      const observer = new PerformanceObserver((list) => {
-        list.getEntries().forEach((entry) => {
+      const observer = new PerformanceObserver(list => {
+        list.getEntries().forEach(entry => {
           if (entry.entryType === 'resource') {
             const resourceEntry = entry as PerformanceResourceTiming;
-            console.log(`Resource loaded: ${resourceEntry.name} (${resourceEntry.transferSize} bytes)`);
+            console.log(
+              `Resource loaded: ${resourceEntry.name} (${resourceEntry.transferSize} bytes)`
+            );
           }
         });
       });
@@ -106,7 +106,7 @@ export const BundleOptimizer = {
       console.log(`${componentName} render time: ${end - start}ms`);
     }
     return result;
-  }
+  },
 };
 export const MemoryManager = {
   cleanupEventListeners(): void {
@@ -119,7 +119,7 @@ export const MemoryManager = {
     if (process.env.NODE_ENV === 'development' && 'gc' in window) {
       (window as unknown as { gc(): void }).gc();
     }
-  }
+  },
 };
 export const NetworkOptimizer = {
   async retryWithBackoff<T>(
@@ -146,7 +146,7 @@ export const NetworkOptimizer = {
     const cacheEntry = {
       data,
       timestamp: Date.now(),
-      ttl
+      ttl,
     };
     localStorage.setItem(`cache_${key}`, JSON.stringify(cacheEntry));
   },
@@ -165,5 +165,5 @@ export const NetworkOptimizer = {
       localStorage.removeItem(`cache_${key}`);
       return null;
     }
-  }
-}; 
+  },
+};

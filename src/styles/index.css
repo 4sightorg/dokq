@@ -16,9 +16,12 @@
   --border-color: #e2e8f0;
   --border-light: #f1f5f9;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-md:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   --gradient-primary: var(--primary-blue);
   --border-radius: 12px;
   --border-radius-sm: 8px;
@@ -31,7 +34,9 @@
   box-sizing: border-box;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   animation-duration: 0s !important;
   animation-delay: 0s !important;
   transition-duration: 0s !important;
@@ -84,7 +89,13 @@ html {
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:
+    'Inter',
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    sans-serif;
   line-height: 1.6;
   color: var(--text-primary);
   background-color: var(--bg-primary);
@@ -150,8 +161,6 @@ body {
   cursor: pointer;
 }
 
-
-
 .register-btn {
   background: var(--primary-color);
   color: white;
@@ -165,14 +174,10 @@ body {
   cursor: pointer;
 }
 
-
-
 .main-hero {
   background-color: var(--bg-secondary);
   position: relative;
 }
-
-
 
 .hero-container {
   max-width: 1280px;
@@ -249,13 +254,6 @@ body {
   font-weight: 500;
   color: var(--text-secondary);
 }
-
-
-
-
-
-
-
 
 .search-section {
   position: relative;
@@ -340,8 +338,6 @@ body {
   color: var(--text-secondary);
 }
 
-
-
 .search-button {
   background: var(--primary-color);
   color: white;
@@ -352,8 +348,6 @@ body {
   cursor: pointer;
   white-space: nowrap;
 }
-
-
 
 .nearby-facilities {
   padding: 6rem 0;
@@ -411,8 +405,6 @@ body {
   border-radius: var(--border-radius-sm);
   cursor: pointer;
 }
-
-
 
 .provider-cta {
   padding: 6rem 0;
@@ -488,8 +480,6 @@ body {
   cursor: pointer;
   margin-bottom: 1rem;
 }
-
-
 
 .partner-btn i {
   font-size: 1.25rem;
@@ -613,7 +603,6 @@ body {
   text-decoration: none;
 }
 
-
 @media (max-width: 1024px) {
   .hero-content {
     grid-template-columns: 1fr;
@@ -630,7 +619,6 @@ body {
     grid-template-columns: 1fr 1fr;
   }
 }
-
 
 @media (max-width: 768px) {
   .container,
@@ -696,10 +684,6 @@ body {
   border: 0;
 }
 
-
-
-
-
 .toast-container {
   position: fixed;
   top: 20px;
@@ -707,8 +691,6 @@ body {
   z-index: 10000;
   pointer-events: none;
 }
-
-
 
 .keyboard-navigation *:focus {
   outline: 2px solid var(--primary-color) !important;
@@ -730,8 +712,6 @@ body {
   padding: 0;
   margin-left: auto;
 }
-
-
 
 .footer-cta {
   background: transparent;
@@ -930,18 +910,17 @@ body {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .cta-actions-section {
     flex-direction: column;
     width: 100%;
   }
-  
+
   .footer-stats {
     justify-content: center;
   }
-  
+
   .social-links {
     justify-content: center;
   }
 }
-

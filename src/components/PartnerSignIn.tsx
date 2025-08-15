@@ -1,78 +1,80 @@
-import React, { useState, useCallback } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { auth } from '../config/firebase'
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import '../styles/partnerSignUp.css'
-import '../styles/csp-utilities.css'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { auth } from '../config/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import '../styles/partnerSignUp.css';
+import '../styles/csp-utilities.css';
 
 const PartnerSignIn: React.FC = React.memo(() => {
-  const navigate = useNavigate()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-  const [errorMessage, setErrorMessage] = useState('')
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleSubmit = useCallback(async (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!email.trim() || !password.trim()) {
-      setErrorMessage('Please enter both email and password')
-      return
-    }
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
 
-    setIsLoading(true)
-    setErrorMessage('')
-
-    try {
-      await signInWithEmailAndPassword(auth, email, password)
-      showNotification('Sign in successful! Welcome back.', 'success')
-      
-      // Redirect to dashboard
-      setTimeout(() => {
-        navigate('/dashboard')
-      }, 1000)
-
-    } catch (error: any) {
-      console.error('Sign in error:', error)
-      let message = 'Sign in failed. Please try again.'
-      
-      if (error.code === 'auth/user-not-found') {
-        message = 'No account found with this email address.'
-      } else if (error.code === 'auth/wrong-password') {
-        message = 'Incorrect password. Please try again.'
-      } else if (error.code === 'auth/invalid-email') {
-        message = 'Please enter a valid email address.'
-      } else if (error.code === 'auth/too-many-requests') {
-        message = 'Too many failed attempts. Please try again later.'
+      if (!email.trim() || !password.trim()) {
+        setErrorMessage('Please enter both email and password');
+        return;
       }
-      
-      setErrorMessage(message)
-    } finally {
-      setIsLoading(false)
-    }
-  }, [email, password, navigate])
 
-  
+      setIsLoading(true);
+      setErrorMessage('');
 
-  const showNotification = useCallback((message: string, type: 'success' | 'error' | 'info' = 'info') => {
-    // Remove existing notifications
-    const existingNotifications = document.querySelectorAll('.notification')
-    existingNotifications.forEach(notification => notification.remove())
-    
-    // Create notification
-    const notification = document.createElement('div')
-    notification.className = `notification notification-${type}`
-    notification.innerHTML = `
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        showNotification('Sign in successful! Welcome back.', 'success');
+
+        // Redirect to dashboard
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 1000);
+      } catch (error: any) {
+        console.error('Sign in error:', error);
+        let message = 'Sign in failed. Please try again.';
+
+        if (error.code === 'auth/user-not-found') {
+          message = 'No account found with this email address.';
+        } else if (error.code === 'auth/wrong-password') {
+          message = 'Incorrect password. Please try again.';
+        } else if (error.code === 'auth/invalid-email') {
+          message = 'Please enter a valid email address.';
+        } else if (error.code === 'auth/too-many-requests') {
+          message = 'Too many failed attempts. Please try again later.';
+        }
+
+        setErrorMessage(message);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [email, password, navigate]
+  );
+
+  const showNotification = useCallback(
+    (message: string, type: 'success' | 'error' | 'info' = 'info') => {
+      // Remove existing notifications
+      const existingNotifications = document.querySelectorAll('.notification');
+      existingNotifications.forEach(notification => notification.remove());
+
+      // Create notification
+      const notification = document.createElement('div');
+      notification.className = `notification notification-${type}`;
+      notification.innerHTML = `
       <div class="notification-content">
         <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
         <span>${message}</span>
         <button class="notification-close">&times;</button>
       </div>
-    `
-    
-    // Add styles
-    notification.style.cssText = `
+    `;
+
+      // Add styles
+      notification.style.cssText = `
       position: fixed;
       top: 20px;
       right: 20px;
@@ -86,79 +88,83 @@ const PartnerSignIn: React.FC = React.memo(() => {
       font-size: 14px;
       max-width: 350px;
       animation: slideIn 0.3s ease-out;
-    `
-    
-    // Add close functionality
-    const closeBtn = notification.querySelector('.notification-close')
-    closeBtn?.addEventListener('click', () => notification.remove())
-    
-    // Add to page
-    document.body.appendChild(notification)
-    
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-      if (notification.parentNode) {
-        notification.style.animation = 'slideOut 0.3s ease-in'
-        setTimeout(() => notification.remove(), 300)
-      }
-    }, 5000)
-  }, [])
+    `;
+
+      // Add close functionality
+      const closeBtn = notification.querySelector('.notification-close');
+      closeBtn?.addEventListener('click', () => notification.remove());
+
+      // Add to page
+      document.body.appendChild(notification);
+
+      // Auto remove after 5 seconds
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.style.animation = 'slideOut 0.3s ease-in';
+          setTimeout(() => notification.remove(), 300);
+        }
+      }, 5000);
+    },
+    []
+  );
 
   return (
-    <div className="partner-signup-container">
-      <div className="signup-content">
-        <div className="signup-header">
-          <div className="logo">
-            <i className="fas fa-heartbeat"></i>
+    <div className='partner-signup-container'>
+      <div className='signup-content'>
+        <div className='signup-header'>
+          <div className='logo'>
+            <i className='fas fa-heartbeat'></i>
             <span>DokQ</span>
           </div>
           <h1>Healthcare Provider Sign In</h1>
           <p>Access your facility dashboard and manage your practice</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="signup-form">
-          <div className="form-step">
+        <form onSubmit={handleSubmit} className='signup-form'>
+          <div className='form-step'>
             <h2>Sign In to Your Account</h2>
             <p>Enter your credentials to access your dashboard</p>
-            
-            <div className="form-group">
-              <label htmlFor="email">Email Address *</label>
+
+            <div className='form-group'>
+              <label htmlFor='email'>Email Address *</label>
               <input
-                type="email"
-                id="email"
+                type='email'
+                id='email'
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email address"
+                onChange={e => setEmail(e.target.value)}
+                placeholder='Enter your email address'
                 required
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="password">Password *</label>
-              <div className="password-input">
+            <div className='form-group'>
+              <label htmlFor='password'>Password *</label>
+              <div className='password-input'>
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  id="password"
+                  id='password'
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder='Enter your password'
                   required
                 />
                 <button
-                  type="button"
-                  className="password-toggle"
+                  type='button'
+                  className='password-toggle'
                   onClick={() => setShowPassword(!showPassword)}
                   aria-label={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  <i className={`fas fa-${showPassword ? 'eye-slash' : 'eye'}`}></i>
+                  <i
+                    className={`fas fa-${showPassword ? 'eye-slash' : 'eye'}`}
+                  ></i>
                 </button>
               </div>
             </div>
 
-            <div className="form-actions">
-              <button 
-                type="submit" 
-                className="btn btn-primary" 
+            <div className='form-actions'>
+              <button
+                type='submit'
+                className='btn btn-primary'
                 disabled={isLoading}
               >
                 {isLoading ? 'Signing In...' : 'Sign In'}
@@ -168,16 +174,16 @@ const PartnerSignIn: React.FC = React.memo(() => {
         </form>
 
         {errorMessage && (
-          <div className="error-message general-error">
-            <i className="fas fa-exclamation-circle"></i>
+          <div className='error-message general-error'>
+            <i className='fas fa-exclamation-circle'></i>
             {errorMessage}
           </div>
         )}
       </div>
     </div>
-  )
-})
+  );
+});
 
-PartnerSignIn.displayName = 'PartnerSignIn'
+PartnerSignIn.displayName = 'PartnerSignIn';
 
-export default PartnerSignIn 
+export default PartnerSignIn;

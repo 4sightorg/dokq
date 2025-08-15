@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 
 const YearUpdater: React.FC = () => {
   useEffect(() => {
-    const yearElement = document.getElementById('current-year')
+    const yearElement = document.getElementById('current-year');
     if (yearElement) {
-      yearElement.textContent = new Date().getFullYear().toString()
+      yearElement.textContent = new Date().getFullYear().toString();
     }
-  }, [])
+  }, []);
 
-  return null
-}
+  return null;
+};
 
-export default YearUpdater 
+export default YearUpdater;
