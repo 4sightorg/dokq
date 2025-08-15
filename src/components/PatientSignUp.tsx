@@ -15,7 +15,6 @@ import {
   sendEmailVerification,
   updateProfile,
 } from 'firebase/auth';
-import PatientConsent from './PatientConsent';
 import '../styles/patientSign-up.css';
 import '../styles/csp-utilities.css';
 
@@ -73,8 +72,7 @@ const PatientSignUp: React.FC = React.memo(() => {
   const [isFormValid, setIsFormValid] = useState(false);
   // Removed unused lastActivity state
   const [formProgress, setFormProgress] = useState(0);
-  const [showConsent, setShowConsent] = useState(false);
-  const [registeredUser, setRegisteredUser] = useState<any>(null);
+  
 
   const emailInputRef = useRef<HTMLInputElement>(null);
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -429,9 +427,7 @@ const PatientSignUp: React.FC = React.memo(() => {
           // Send email verification
           await sendEmailVerification(userCredential.user);
 
-          showSuccess(
-            'Account created successfully! Please provide consent to continue.'
-          );
+          showSuccess('Account created successfully! Redirecting...');
 
           // Save successful registration time
           localStorage.setItem(
@@ -439,9 +435,8 @@ const PatientSignUp: React.FC = React.memo(() => {
             new Date().toISOString()
           );
 
-          // Set user and show consent form
-          setRegisteredUser(userCredential.user);
-          setShowConsent(true);
+          // Navigate directly to patient portal
+          navigate('/patient-portal');
         }
       } catch (error: any) {
         console.error('Sign up error:', error);
@@ -589,7 +584,7 @@ const PatientSignUp: React.FC = React.memo(() => {
         }
 
         // Show success message
-        showSuccess('Google sign-up successful! Please provide consent to continue.');
+        showSuccess('Google sign-up successful! Redirecting...');
 
         // Save successful registration time
         localStorage.setItem(
@@ -597,24 +592,8 @@ const PatientSignUp: React.FC = React.memo(() => {
           new Date().toISOString()
         );
 
-        // Set user and show consent form
-        console.log('🎯 Setting registered user and showing consent form...');
-        try {
-          setRegisteredUser(result.user);
-          setShowConsent(true);
-          console.log('✅ Consent form should now be visible');
-          
-          // Add a timeout to ensure consent form is shown
-          setTimeout(() => {
-            if (!showConsent) {
-              console.warn('⚠️ Consent form not showing, using fallback...');
-              handleConsentFallback();
-            }
-          }, 2000);
-        } catch (error) {
-          console.error('❌ Error showing consent form:', error);
-          handleConsentFallback();
-        }
+        // Navigate directly to patient portal
+        navigate('/patient-portal');
       }
     } catch (error: any) {
       console.error('Google sign-up failed:', error);
@@ -677,57 +656,7 @@ const PatientSignUp: React.FC = React.memo(() => {
     navigate('/');
   }, [navigate]);
 
-  const handleConsentComplete = useCallback(() => {
-    console.log('🎯 Consent completed, attempting navigation...');
-    setShowConsent(false);
-    // Redirect to patient portal after consent is given
-    try {
-      console.log('🚀 Navigating to /patient-portal...');
-      navigate('/patient-portal');
-      console.log('✅ Navigation successful');
-    } catch (error) {
-      console.error('❌ Navigation error:', error);
-      // If there's a navigation error, try again with a slight delay
-      console.log('🔄 Retrying navigation to /patient-portal...');
-      setTimeout(() => {
-        try {
-          navigate('/patient-portal');
-        } catch (retryError) {
-          console.error('❌ Retry navigation also failed:', retryError);
-          // Last resort: force navigation to patient portal
-          window.location.href = '/patient-portal';
-        }
-      }, 100);
-    }
-  }, [navigate]);
-
-  // Fallback function in case consent form fails
-  const handleConsentFallback = useCallback(() => {
-    console.log('🔄 Consent form failed, using fallback navigation...');
-    setShowConsent(false);
-    // Always try to navigate to patient portal, never to partner dashboard
-    try {
-      console.log('🔄 Attempting fallback navigation to /patient-portal...');
-      navigate('/patient-portal');
-    } catch (error) {
-      console.error('❌ Fallback navigation also failed:', error);
-      // Last resort: force navigation to patient portal
-      console.log('🔄 Last resort: forcing navigation to /patient-portal...');
-      window.location.href = '/patient-portal';
-    }
-  }, [navigate]);
-
-  // Test navigation function to debug routing issues
-  const testNavigation = useCallback(() => {
-    console.log('🧪 Testing navigation...');
-    try {
-      console.log('🧪 Testing /patient-portal route...');
-      navigate('/patient-portal');
-      console.log('✅ /patient-portal navigation successful');
-    } catch (error) {
-      console.error('❌ /patient-portal navigation failed:', error);
-    }
-  }, [navigate]);
+  
 
   // Keyboard navigation support
   useEffect(() => {
@@ -1245,46 +1174,7 @@ const PatientSignUp: React.FC = React.memo(() => {
         </div>
       </div>
 
-      {/* Consent Form Modal */}
-      {showConsent && registeredUser && (
-        <div className="consent-modal-overlay">
-          <div className="consent-modal">
-            <React.Suspense fallback={
-              <div style={{ padding: '2rem', textAlign: 'center' }}>
-                <div>Loading consent form...</div>
-              </div>
-            }>
-              <PatientConsent 
-                user={registeredUser} 
-                onConsentComplete={handleConsentComplete} 
-              />
-            </React.Suspense>
-          </div>
-        </div>
-      )}
       
-      {/* Debug Info */}
-      {process.env.NODE_ENV === 'development' && (
-        <div style={{ position: 'fixed', bottom: '10px', right: '10px', background: '#333', color: 'white', padding: '10px', borderRadius: '5px', fontSize: '12px', zIndex: 9999 }}>
-          <div>Debug: showConsent={showConsent.toString()}</div>
-          <div>registeredUser={registeredUser ? 'Yes' : 'No'}</div>
-          <button 
-            onClick={testNavigation}
-            style={{
-              marginTop: '5px',
-              padding: '2px 6px',
-              background: '#666',
-              color: 'white',
-              border: 'none',
-              borderRadius: '3px',
-              cursor: 'pointer',
-              fontSize: '10px'
-            }}
-          >
-            Test Nav
-          </button>
-        </div>
-      )}
     </div>
   );
 });
