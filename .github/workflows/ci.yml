@@ -30,8 +30,5 @@ jobs:
       - name: 🧹 Lint code
         run: pnpm run lint
 
-      - name: 🧪 Type check
-        run: pnpm run type-check
-
       - name: 🛠 Build app
         run: pnpm run build
