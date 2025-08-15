@@ -1,79 +1,129 @@
-## DokQ
+## DokQ — Smart Queuing and Appointments for Healthcare
 
-DokQ is a smart, integrated hospital queuing and appointment system designed to transform the patient experience and improve hospital efficiency. By leveraging modern technology, DokQ aims to solve the systemic issues of long waiting times, hospital overcrowding, and limited healthcare access, particularly for underserved communities. The system creates a more seamless, safe, and dignified healthcare journey for every patient.
+DokQ is an integrated platform for discovering healthcare facilities and managing appointments. It focuses on reducing wait times, improving clinic efficiency, and giving patients a simple, modern experience on web and mobile.
 
-## Features
+### Highlights
+- Simple and secure authentication (email or Google)
+- Fast appointment booking and editing
+- Patient dashboard with consult history and documents
+- Facility discovery with filters and details
+- Accessible UI, responsive across devices
 
-- Easy, simple yet secure authentication with OAuth.
-- Fast bookings
-- Works in all hospitals
+---
 
-## How to use
+## Quick start
 
-1. Using Vercel:
-
+### 1) Deploy with Vercel
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/4sightorg/dokq)
 
-2. Through Docker
+### 2) Run locally
+Prerequisites: Node.js 18+, npm or pnpm
 
 ```shell
-docker run -p 5173:5173 --name docq -e VITE_FIREBASE_API_KEY: qwertyuiopasdfghjklzxcvbnm \
-      -e VITE_FIREBASE_AUTH_DOMAIN: testapp.firebaseapp.com \
-      -e VITE_FIREBASE_PROJECT_ID: testapp \
-      -e VITE_FIREBASE_STORAGE_BUCKET: testapp.firebasestorage.app \
-      -e VITE_FIREBASE_MESSAGING_SENDER_ID: 1234567890 \
-      -e VITE_FIREBASE_APP_ID: 1:234567890:web:1234567890 \
-      -e VITE_FIREBASE_MEASUREMENT_ID: G-P134567890
+git clone https://github.com/4sightorg/dokq
+cd dokq
+npm install
+
+# Configure environment (see below)
+cp .env.example .env.local  # if you have an example file; otherwise create .env.local
+
+# Development
+npm run dev
+
+# Production build + start
+npm run build:all
+npm run start
 ```
 
-3. Through Docker Compose
+### 3) Docker (single container)
+```shell
+docker run -p 5173:5173 --name dokq \
+  -e VITE_FIREBASE_API_KEY=your_api_key \
+  -e VITE_FIREBASE_AUTH_DOMAIN=your-app.firebaseapp.com \
+  -e VITE_FIREBASE_PROJECT_ID=your_project_id \
+  -e VITE_FIREBASE_STORAGE_BUCKET=your-app.appspot.com \
+  -e VITE_FIREBASE_MESSAGING_SENDER_ID=1234567890 \
+  -e VITE_FIREBASE_APP_ID=1:1234567890:web:abcdef \
+  -e VITE_FIREBASE_MEASUREMENT_ID=G-XXXXXXX \
+  ghcr.io/4sightorg/dokq:latest
+```
 
+### 4) Docker Compose
 ```shell
 curl -fsSL https://raw.githubusercontent.com/4sightorg/dokq/refs/heads/main/docker-compose.yml -o docker-compose.yml
 docker compose up
 ```
 
-4. Locally:
+---
 
-```shell
-# Clone repository
-git clone https://github.com/4sightorg/dokq dokq
-# Go inside the repository
-cd docq
+## Environment variables
+Create an `.env.local` (used by Vite) with the following keys:
 
-# Install all the needed packages
-npm install
-# or `pnpm install`, whatever works
-
-# Run a production build
-npm run build:all
-
-# Start production
-npm run start
-# or do `npm run dev` to run the development version.
+```ini
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+VITE_FIREBASE_MEASUREMENT_ID=
 ```
 
-## Tech Stack
+You can verify your environment locally:
+```shell
+npm run verify-env
+```
 
-| Category                                                                                                                                                                                                                                                          | Tools                     |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
-| ![HTML 5 Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/HTML/html2.svg) ![CSS Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/CSS/css2.svg) ![JS Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Javascript/javascript2.svg) | Front-end                 |
-| ![Tailwind Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/TailwindCSS/tailwindcss2.svg)                                                                                                                                                              | Styling                   |
-| ![Typescript Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/TypeScript/typescript2.svg)                                                                                                                                                              | Front-end / Back-end      |
-| ![React Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/React/react2.svg) ![Vite.js Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/ViteJS/vitejs2.svg)                                                                                   | JS Framework              |
-| ![Express Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Express/express1.svg) ![Node.js Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/NodeJS/nodejs2.svg)                                                                             | Back-end                  |
-| ![alt text](https://ziadoua.github.io/m3-Markdown-Badges/badges/Firebase/firebase2.svg)                                                                                                                                                                           | Database & Authentication |
-| ![Prettier Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Prettier/prettier2.svg) ![alt text](https://ziadoua.github.io/m3-Markdown-Badges/badges/ESLint/eslint2.svg)                                                                                | Code Style Checker/Linter |
-| ![Vercel Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Vercel/vercel1.svg) ![Docker Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Docker/docker1.svg)                                                                                 | Deployment                |
+---
 
-## AI Notice
+## Project scripts
 
-Generative AI such as Claude and ChatGPT has been used for the following purposes:
+```text
+npm run dev            # Start Vite dev server
+npm run build          # Build frontend
+npm run build:all      # Build frontend + API
+npm run start          # Start API/server (production)
+npm run test           # Run unit tests (Vitest)
+npm run lint           # Lint + Prettier check
+npm run lint:fix       # Autofix lint errors & format
+```
 
-- Code checking and validation,
-- Code testing and debugging, and
-- Understanding JavaScript frameworks and the way they work
+---
+
+## Tech stack
+
+- React, TypeScript, Vite
+- Node.js/Express for API
+- Firebase (Auth, Firestore, Storage)
+- ESLint, Prettier, Vitest
+- Vercel / Docker for deployment
+
+---
+
+## Contributing
+
+1. Fork and clone the repository
+2. Create a branch using conventional commits (e.g., `feat:`, `fix:`)
+3. Make changes with linting and tests passing
+4. Open a pull request with a clear description and screenshots when relevant
+
+---
+
+## AI usage disclosure
+
+Generative AI was used for:
+- Code review and validation
+- Debugging and test ideation
+- Summarizing framework/API documentation
+
+---
 
 ## Acknowledgements
 
-Thank you very much @kuya-carlo, @adr1el-m, @MiyanoShiho21 and @donutellah for being the primarial builder of this project, owners, developers and contributors of the abovementioned tools and frameworks, including ziadOUA/m3-Markdown-Badges for the badges, and to DLSU for giving us the chance to compete in Hackercup 2025
+Special thanks to the contributors and maintainers. We also acknowledge the authors of the open‑source tools used in this project and the m3-Markdown-Badges project for the technology badges.
+
+---
+
+## License
+
+This project is currently distributed without a public license. For usage or redistribution inquiries, please contact the maintainers.
