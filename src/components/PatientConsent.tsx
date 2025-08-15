@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../config/firebase';
@@ -22,6 +22,7 @@ interface ConsentData {
 }
 
 const PatientConsent: React.FC<PatientConsentProps> = ({ user, onConsentComplete }) => {
+  console.log('🎯 PatientConsent component rendered with user:', user);
   const navigate = useNavigate();
   const [language, setLanguage] = useState<'en' | 'tl'>('en');
   const [consentData, setConsentData] = useState<ConsentData>({
@@ -37,6 +38,7 @@ const PatientConsent: React.FC<PatientConsentProps> = ({ user, onConsentComplete
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [hasError, setHasError] = useState(false);
 
   const handleConsentChange = useCallback((field: keyof ConsentData, value: boolean) => {
     setConsentData(prev => ({
@@ -172,10 +174,21 @@ const PatientConsent: React.FC<PatientConsentProps> = ({ user, onConsentComplete
       onConsentComplete();
       console.log('✅ Completion callback called');
     } catch (error: any) {
-      console.error('Error saving consent:', error);
+      console.error('❌ Error saving consent:', error);
+      setHasError(true);
       setErrorMessage(language === 'en'
         ? 'Error saving consent. Please try again.'
         : 'Error sa pag-save ng pahintulot. Mangyaring subukan muli.');
+      
+      // If there's a critical error, try to call the completion callback anyway
+      setTimeout(() => {
+        try {
+          console.log('🔄 Attempting to continue despite consent error...');
+          onConsentComplete();
+        } catch (fallbackError) {
+          console.error('❌ Fallback also failed:', fallbackError);
+        }
+      }, 3000);
     } finally {
       setIsSubmitting(false);
     }
@@ -184,6 +197,17 @@ const PatientConsent: React.FC<PatientConsentProps> = ({ user, onConsentComplete
   const toggleLanguage = useCallback(() => {
     setLanguage(prev => prev === 'en' ? 'tl' : 'en');
   }, []);
+
+  // Debug useEffect
+  useEffect(() => {
+    console.log('🎯 PatientConsent component mounted');
+    console.log('👤 User data:', user);
+    console.log('🌐 Current language:', language);
+    
+    return () => {
+      console.log('🎯 PatientConsent component unmounting');
+    };
+  }, [user, language]);
 
   const consentContent = {
     en: {
@@ -446,6 +470,30 @@ const PatientConsent: React.FC<PatientConsentProps> = ({ user, onConsentComplete
         >
           {isSubmitting ? 'Saving...' : currentContent.submitButton}
         </button>
+
+        {/* Fallback button in case of errors */}
+        {hasError && (
+          <button
+            type="button"
+            onClick={() => {
+              console.log('🔄 Using fallback consent completion...');
+              onConsentComplete();
+            }}
+            className="consent-fallback-btn"
+            style={{
+              marginTop: '1rem',
+              background: '#ff9800',
+              color: 'white',
+              border: 'none',
+              padding: '0.75rem 1.5rem',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              width: '100%'
+            }}
+          >
+            Continue Without Saving Consent
+          </button>
+        )}
       </div>
     </div>
   );

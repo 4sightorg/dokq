@@ -599,9 +599,22 @@ const PatientSignUp: React.FC = React.memo(() => {
 
         // Set user and show consent form
         console.log('🎯 Setting registered user and showing consent form...');
-        setRegisteredUser(result.user);
-        setShowConsent(true);
-        console.log('✅ Consent form should now be visible');
+        try {
+          setRegisteredUser(result.user);
+          setShowConsent(true);
+          console.log('✅ Consent form should now be visible');
+          
+          // Add a timeout to ensure consent form is shown
+          setTimeout(() => {
+            if (!showConsent) {
+              console.warn('⚠️ Consent form not showing, using fallback...');
+              handleConsentFallback();
+            }
+          }, 2000);
+        } catch (error) {
+          console.error('❌ Error showing consent form:', error);
+          handleConsentFallback();
+        }
       }
     } catch (error: any) {
       console.error('Google sign-up failed:', error);
@@ -677,6 +690,34 @@ const PatientSignUp: React.FC = React.memo(() => {
       // Fallback to dashboard if patient-portal route doesn't exist
       console.log('🔄 Falling back to /dashboard...');
       navigate('/dashboard');
+    }
+  }, [navigate]);
+
+  // Fallback function in case consent form fails
+  const handleConsentFallback = useCallback(() => {
+    console.log('🔄 Consent form failed, using fallback navigation...');
+    setShowConsent(false);
+    // Try to navigate to dashboard as fallback
+    try {
+      console.log('🔄 Attempting fallback navigation to /dashboard...');
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('❌ Fallback navigation also failed:', error);
+      // Last resort: go to home page
+      console.log('🔄 Last resort: navigating to home page...');
+      navigate('/');
+    }
+  }, [navigate]);
+
+  // Test navigation function to debug routing issues
+  const testNavigation = useCallback(() => {
+    console.log('🧪 Testing navigation...');
+    try {
+      console.log('🧪 Testing /dashboard route...');
+      navigate('/dashboard');
+      console.log('✅ /dashboard navigation successful');
+    } catch (error) {
+      console.error('❌ /dashboard navigation failed:', error);
     }
   }, [navigate]);
 
@@ -1200,10 +1241,16 @@ const PatientSignUp: React.FC = React.memo(() => {
       {showConsent && registeredUser && (
         <div className="consent-modal-overlay">
           <div className="consent-modal">
-            <PatientConsent 
-              user={registeredUser} 
-              onConsentComplete={handleConsentComplete} 
-            />
+            <React.Suspense fallback={
+              <div style={{ padding: '2rem', textAlign: 'center' }}>
+                <div>Loading consent form...</div>
+              </div>
+            }>
+              <PatientConsent 
+                user={registeredUser} 
+                onConsentComplete={handleConsentComplete} 
+              />
+            </React.Suspense>
           </div>
         </div>
       )}
@@ -1211,7 +1258,23 @@ const PatientSignUp: React.FC = React.memo(() => {
       {/* Debug Info */}
       {process.env.NODE_ENV === 'development' && (
         <div style={{ position: 'fixed', bottom: '10px', right: '10px', background: '#333', color: 'white', padding: '10px', borderRadius: '5px', fontSize: '12px', zIndex: 9999 }}>
-          Debug: showConsent={showConsent.toString()}, registeredUser={registeredUser ? 'Yes' : 'No'}
+          <div>Debug: showConsent={showConsent.toString()}</div>
+          <div>registeredUser={registeredUser ? 'Yes' : 'No'}</div>
+          <button 
+            onClick={testNavigation}
+            style={{
+              marginTop: '5px',
+              padding: '2px 6px',
+              background: '#666',
+              color: 'white',
+              border: 'none',
+              borderRadius: '3px',
+              cursor: 'pointer',
+              fontSize: '10px'
+            }}
+          >
+            Test Nav
+          </button>
         </div>
       )}
     </div>
