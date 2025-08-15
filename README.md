@@ -3,6 +3,7 @@
 DokQ is an integrated platform for discovering healthcare facilities and managing appointments. It focuses on reducing wait times, improving clinic efficiency, and giving patients a simple, modern experience on web and mobile.
 
 ### Highlights
+
 - Simple and secure authentication (email or Google)
 - Fast appointment booking and editing
 - Patient dashboard with consult history and documents
@@ -14,9 +15,11 @@ DokQ is an integrated platform for discovering healthcare facilities and managin
 ## Quick start
 
 ### 1) Deploy with Vercel
+
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/4sightorg/dokq)
 
 ### 2) Run locally
+
 Prerequisites: Node.js 18+, npm or pnpm
 
 ```shell
@@ -36,6 +39,7 @@ npm run start
 ```
 
 ### 3) Docker (single container)
+
 ```shell
 docker run -p 5173:5173 --name dokq \
   -e VITE_FIREBASE_API_KEY=your_api_key \
@@ -49,6 +53,7 @@ docker run -p 5173:5173 --name dokq \
 ```
 
 ### 4) Docker Compose
+
 ```shell
 curl -fsSL https://raw.githubusercontent.com/4sightorg/dokq/refs/heads/main/docker-compose.yml -o docker-compose.yml
 docker compose up
@@ -57,6 +62,7 @@ docker compose up
 ---
 
 ## Environment variables
+
 Create an `.env.local` (used by Vite) with the following keys:
 
 ```ini
@@ -70,6 +76,7 @@ VITE_FIREBASE_MEASUREMENT_ID=
 ```
 
 You can verify your environment locally:
+
 ```shell
 npm run verify-env
 ```
@@ -112,6 +119,7 @@ npm run lint:fix       # Autofix lint errors & format
 ## AI usage disclosure
 
 Generative AI was used for:
+
 - Code review and validation
 - Debugging and test ideation
 - Summarizing framework/API documentation
