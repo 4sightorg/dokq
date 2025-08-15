@@ -2,7 +2,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
-import { Analytics } from '@vercel/analytics/next';
 
 if (import.meta && (import.meta as any).env && (import.meta as any).env.PROD) {
   const methods = [
@@ -24,7 +23,6 @@ if (import.meta && (import.meta as any).env && (import.meta as any).env.PROD) {
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Analytics />
     <App />
   </React.StrictMode>
 );
