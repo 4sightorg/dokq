@@ -687,9 +687,17 @@ const PatientSignUp: React.FC = React.memo(() => {
       console.log('✅ Navigation successful');
     } catch (error) {
       console.error('❌ Navigation error:', error);
-      // Fallback to dashboard if patient-portal route doesn't exist
-      console.log('🔄 Falling back to /dashboard...');
-      navigate('/dashboard');
+      // If there's a navigation error, try again with a slight delay
+      console.log('🔄 Retrying navigation to /patient-portal...');
+      setTimeout(() => {
+        try {
+          navigate('/patient-portal');
+        } catch (retryError) {
+          console.error('❌ Retry navigation also failed:', retryError);
+          // Last resort: force navigation to patient portal
+          window.location.href = '/patient-portal';
+        }
+      }, 100);
     }
   }, [navigate]);
 
@@ -697,15 +705,15 @@ const PatientSignUp: React.FC = React.memo(() => {
   const handleConsentFallback = useCallback(() => {
     console.log('🔄 Consent form failed, using fallback navigation...');
     setShowConsent(false);
-    // Try to navigate to dashboard as fallback
+    // Always try to navigate to patient portal, never to partner dashboard
     try {
-      console.log('🔄 Attempting fallback navigation to /dashboard...');
-      navigate('/dashboard');
+      console.log('🔄 Attempting fallback navigation to /patient-portal...');
+      navigate('/patient-portal');
     } catch (error) {
       console.error('❌ Fallback navigation also failed:', error);
-      // Last resort: go to home page
-      console.log('🔄 Last resort: navigating to home page...');
-      navigate('/');
+      // Last resort: force navigation to patient portal
+      console.log('🔄 Last resort: forcing navigation to /patient-portal...');
+      window.location.href = '/patient-portal';
     }
   }, [navigate]);
 
@@ -713,11 +721,11 @@ const PatientSignUp: React.FC = React.memo(() => {
   const testNavigation = useCallback(() => {
     console.log('🧪 Testing navigation...');
     try {
-      console.log('🧪 Testing /dashboard route...');
-      navigate('/dashboard');
-      console.log('✅ /dashboard navigation successful');
+      console.log('🧪 Testing /patient-portal route...');
+      navigate('/patient-portal');
+      console.log('✅ /patient-portal navigation successful');
     } catch (error) {
-      console.error('❌ /dashboard navigation failed:', error);
+      console.error('❌ /patient-portal navigation failed:', error);
     }
   }, [navigate]);
 
