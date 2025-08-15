@@ -14,7 +14,26 @@ DokQ is a smart, integrated hospital queuing and appointment system designed to 
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/4sightorg/dokq)
 
-2. Locally:
+2. Through Docker
+
+```shell
+docker run -p 5173:5173 --name docq -e VITE_FIREBASE_API_KEY: qwertyuiopasdfghjklzxcvbnm \
+      -e VITE_FIREBASE_AUTH_DOMAIN: testapp.firebaseapp.com \
+      -e VITE_FIREBASE_PROJECT_ID: testapp \
+      -e VITE_FIREBASE_STORAGE_BUCKET: testapp.firebasestorage.app \
+      -e VITE_FIREBASE_MESSAGING_SENDER_ID: 1234567890 \
+      -e VITE_FIREBASE_APP_ID: 1:234567890:web:1234567890 \
+      -e VITE_FIREBASE_MEASUREMENT_ID: G-P134567890
+```
+
+3. Through Docker Compose
+
+```shell
+curl -fsSL https://raw.githubusercontent.com/4sightorg/dokq/refs/heads/main/docker-compose.yml -o docker-compose.yml
+docker compose up
+```
+
+4. Locally:
 
 ```shell
 # Clone repository
@@ -45,6 +64,7 @@ npm run start
 | ![Express Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Express/express1.svg) ![Node.js Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/NodeJS/nodejs2.svg)                                                                             | Back-end                  |
 | ![alt text](https://ziadoua.github.io/m3-Markdown-Badges/badges/Firebase/firebase2.svg)                                                                                                                                                                           | Database & Authentication |
 | ![Prettier Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Prettier/prettier2.svg) ![alt text](https://ziadoua.github.io/m3-Markdown-Badges/badges/ESLint/eslint2.svg)                                                                                | Code Style Checker/Linter |
+| ![Vercel Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Vercel/vercel1.svg) ![Docker Shield](https://ziadoua.github.io/m3-Markdown-Badges/badges/Docker/docker1.svg)                                                                                 | Deployment                |
 
 ## AI Notice
 
