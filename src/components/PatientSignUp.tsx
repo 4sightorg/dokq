@@ -193,7 +193,7 @@ const PatientSignUp: React.FC = React.memo(() => {
           remember: parsed.remember || false,
         }));
       } catch (error) {
-        console.warn('Failed to load saved form data:', error);
+        // Failed to load saved form data
       }
     }
   }, []);
@@ -334,9 +334,7 @@ const PatientSignUp: React.FC = React.memo(() => {
       setValidationErrors({});
 
       try {
-        console.log('Creating account with Firebase:', {
-          email: formData.email,
-        });
+
 
         // Create user with Firebase
         const userCredential = await createUserWithEmailAndPassword(
@@ -346,10 +344,6 @@ const PatientSignUp: React.FC = React.memo(() => {
         );
 
         if (userCredential.user) {
-          console.log(
-            'Account created successfully:',
-            userCredential.user.email
-          );
 
           // Update user's display name
           await updateProfile(userCredential.user, {
@@ -396,28 +390,8 @@ const PatientSignUp: React.FC = React.memo(() => {
               doc(db, 'patients', userCredential.user.uid),
               patientData
             );
-            console.log(
-              '✅ Patient document created successfully in Firestore'
-            );
-            // Verify immediately
-            try {
-              const { getDoc } = await import('firebase/firestore');
-              const created = await getDoc(
-                doc(db, 'patients', userCredential.user.uid)
-              );
-              console.log('🔎 Verification readback exists:', created.exists());
-              if (!created.exists()) {
-                console.warn(
-                  '⚠️ Verification readback failed: document not found right after setDoc'
-                );
-              } else {
-                console.log('📄 Verification data:', created.data());
-              }
-            } catch (verifyErr) {
-              console.warn('⚠️ Verification readback error:', verifyErr);
-            }
+
           } catch (error) {
-            console.error('❌ Error creating patient document:', error);
             // Show error but continue with registration
             showError(
               'Account created but there was an issue saving your profile. You can update it later in the portal.'
@@ -439,8 +413,6 @@ const PatientSignUp: React.FC = React.memo(() => {
           navigate('/patient-portal');
         }
       } catch (error: any) {
-        console.error('Sign up error:', error);
-
         let errorMsg = 'Sign up failed. Please try again.';
 
         switch (error.code) {
@@ -498,8 +470,6 @@ const PatientSignUp: React.FC = React.memo(() => {
     setValidationErrors({});
 
     try {
-      console.log('Starting Google Sign-Up with Firebase...');
-
       // Configure Google provider
       const provider = new GoogleAuthProvider();
       provider.addScope('email');
@@ -512,14 +482,8 @@ const PatientSignUp: React.FC = React.memo(() => {
       const result = await signInWithPopup(auth, provider);
 
       if (result.user) {
-        console.log('Google sign-up successful:', result.user.email);
-
         // Create patient document in Firestore
         try {
-          console.log('📦 Starting patient document creation...');
-          console.log('User UID:', result.user.uid);
-          console.log('User email:', result.user.email);
-          console.log('User display name:', result.user.displayName);
 
           // Use direct Firestore write for simplicity
           const { doc, setDoc, serverTimestamp } = await import(
@@ -562,21 +526,8 @@ const PatientSignUp: React.FC = React.memo(() => {
             authProvider: 'google',
           };
 
-          console.log('📦 Creating document in Firestore...');
-          console.log('Collection: patients');
-          console.log('Document ID:', result.user.uid);
-          console.log('Data:', patientData);
-
           await setDoc(doc(db, 'patients', result.user.uid), patientData);
-          console.log('✅ Patient document created successfully in Firestore!');
         } catch (error: any) {
-          console.error('❌ Error creating patient document:', error);
-          console.error('❌ Error details:', {
-            message: error.message,
-            code: error.code,
-            stack: error.stack,
-          });
-
           // Show error but continue with navigation
           showError(
             `Account created but Firestore document creation failed: ${error.message}`
@@ -596,8 +547,6 @@ const PatientSignUp: React.FC = React.memo(() => {
         navigate('/patient-portal');
       }
     } catch (error: any) {
-      console.error('Google sign-up failed:', error);
-
       let errorMsg = 'Google sign-up failed. Please try again.';
 
       // Handle specific Google auth errors
@@ -686,31 +635,7 @@ const PatientSignUp: React.FC = React.memo(() => {
     }
   }, [errorMessage]);
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        handleClose();
-      }
-      if (event.key === 'Enter' && event.ctrlKey) {
-        event.preventDefault();
-        if (isFormValid && !isLoading) {
-          formRef.current?.requestSubmit();
-        }
-      }
-    };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [handleClose, isFormValid, isLoading]);
-
-  useEffect(() => {
-    if (errorMessage) {
-      const liveRegion = document.getElementById('live-region');
-      if (liveRegion) {
-        liveRegion.textContent = `Error: ${errorMessage}`;
-      }
-    }
-  }, [errorMessage]);
 
   return (
     <div
