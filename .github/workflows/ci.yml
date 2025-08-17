@@ -1,34 +1,49 @@
-name: Code linting checks
+name: "CodeQL for React"
 
 on:
   push:
-    branches: [main, dev]
+    branches: [ "main" ]
   pull_request:
-    branches: [main, dev]
+    branches: [ "main" ]
+  schedule:
+    - cron: '42 2 * * 2' # weekly run
 
 jobs:
-  build:
+  analyze:
+    name: Analyze JavaScript/TypeScript
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+      packages: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ "javascript-typescript" ]
+        build-mode: [ "none" ] # React doesn’t need compilation for CodeQL scanning
+
     steps:
-      - name: ⬇️ Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 📦 Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
-      - name: ⚙️ Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'pnpm'
+          node-version: 20
 
-      - name: 📦 Install dependencies
-        run: pnpm install
+      # Install deps so CodeQL sees the code structure
+      - name: Install dependencies
+        run: npm ci
 
-      - name: 🧹 Lint code
-        run: pnpm run lint
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
 
-      - name: 🛠 Build app
-        run: pnpm run build
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{matrix.language}}"
