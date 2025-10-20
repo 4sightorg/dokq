@@ -1,4 +1,4 @@
-FROM node:24-alpine 
+FROM node:25-alpine 
 
 LABEL Authors="kuya-carlo, MiyanoShiho21, donutellah, adr1el-m" \
   Maintainer="kuya-carlo, MiyanoShiho21, donutellah, adr1el-m" \
